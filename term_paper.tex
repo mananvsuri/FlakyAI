@@ -102,22 +102,21 @@ We employ SHAP (SHapley Additive exPlanations) \cite{lundberg2017unified} for po
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
-    node distance=0.8cm,
-    every node/.style={font=\small},
-    process/.style={rectangle, draw, fill=blue!10, text width=3.5cm, text centered, minimum height=0.7cm},
-    decision/.style={diamond, draw, fill=yellow!20, text width=2.5cm, text centered, minimum height=0.7cm},
-    arrow/.style={thick,->,>=stealth}
+    node distance=0.6cm,
+    every node/.style={font=\scriptsize},
+    process/.style={rectangle, draw, fill=blue!10, text width=5.5cm, text centered, minimum height=0.6cm},
+    arrow/.style={->,>=stealth}
 ]
 
 % Nodes
 \node (input) [process] {Test Execution History (CSV)};
 \node (validate) [process, below=of input] {Data Validation \& Parsing};
 \node (feature) [process, below=of validate] {Feature Engineering (15+ features)};
-\node (model) [process, below=of feature] {Model Selection};
+\node (model) [process, below=of feature] {Model Selection (4 models)};
 \node (train) [process, below=of model] {Training \& Prediction};
 \node (shap) [process, below=of train] {SHAP Explainability};
 \node (recommend) [process, below=of shap] {Generate Recommendations};
-\node (output) [process, below=of recommend] {Display Results};
+\node (output) [process, below=of recommend] {Display Results \& Dashboard};
 
 % Arrows
 \draw [arrow] (input) -- (validate);
@@ -128,14 +127,8 @@ We employ SHAP (SHapley Additive exPlanations) \cite{lundberg2017unified} for po
 \draw [arrow] (shap) -- (recommend);
 \draw [arrow] (recommend) -- (output);
 
-% Side annotations
-\node[right=1.5cm of validate, text width=2cm, font=\scriptsize] {CSV format, required fields, timestamp};
-\node[right=1.5cm of feature, text width=2cm, font=\scriptsize] {Temporal ordering, no leakage};
-\node[right=1.5cm of model, text width=2cm, font=\scriptsize] {4 models available};
-\node[right=1.5cm of shap, text width=2cm, font=\scriptsize] {Feature importance};
-
 \end{tikzpicture}
-\caption{FlakeGuard AI Processing Pipeline - Complete workflow from data input to results display}
+\caption{Processing Pipeline - Complete workflow from data input through analysis to results visualization}
 \label{fig:flowchart}
 \end{figure}
 
@@ -145,38 +138,38 @@ The system is implemented as a full-stack web application. The backend uses Pyth
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
-    node distance=0.5cm,
-    every node/.style={font=\footnotesize},
-    layer/.style={rectangle, draw, fill=blue!15, text width=7cm, text centered, minimum height=1cm, rounded corners},
-    component/.style={rectangle, draw, fill=green!10, text width=3cm, text centered, minimum height=0.6cm},
-    db/.style={cylinder, draw, fill=orange!20, text width=2cm, text centered, minimum height=0.6cm, shape border rotate=90},
-    arrow/.style={thick,->,>=stealth}
+    node distance=0.4cm,
+    every node/.style={font=\scriptsize},
+    layer/.style={rectangle, draw, fill=blue!15, text width=6cm, text centered, minimum height=0.8cm, rounded corners},
+    component/.style={rectangle, draw, fill=green!10, text width=2.5cm, text centered, minimum height=0.5cm},
+    db/.style={cylinder, draw, fill=orange!20, text width=1.8cm, text centered, minimum height=0.5cm, shape border rotate=90},
+    arrow/.style={->,>=stealth}
 ]
 
 % Frontend Layer
-\node (frontend) [layer] {\textbf{Frontend Layer} \\ React + TypeScript + Tailwind CSS};
+\node (frontend) [layer] {\textbf{Frontend Layer} \\ React + TypeScript};
 
 % UI Components
-\node (ui1) [component, below=0.3cm of frontend, xshift=-2cm] {Dataset Upload UI};
-\node (ui2) [component, right=0.2cm of ui1] {Analysis UI};
+\node (ui1) [component, below=0.25cm of frontend, xshift=-1.5cm] {Upload UI};
+\node (ui2) [component, right=0.15cm of ui1] {Analysis UI};
 
 % API Layer
-\node (api) [layer, below=1cm of ui1.south, xshift=2cm] {\textbf{API Layer} \\ FastAPI RESTful Endpoints};
+\node (api) [layer, below=0.8cm of ui1.south, xshift=1.5cm] {\textbf{API Layer} \\ FastAPI REST};
 
 % Backend Components
-\node (backend) [layer, below=0.8cm of api] {\textbf{Backend Services}};
-\node (upload) [component, below=0.3cm of backend, xshift=-2.5cm] {Upload Handler};
-\node (ml) [component, right=0.2cm of upload] {ML Engine};
-\node (shap) [component, right=0.2cm of ml] {Explainability};
+\node (backend) [layer, below=0.6cm of api] {\textbf{Backend Services}};
+\node (upload) [component, below=0.25cm of backend, xshift=-2cm] {Upload};
+\node (ml) [component, right=0.15cm of upload] {ML Engine};
+\node (shap) [component, right=0.15cm of ml] {SHAP};
 
 % ML Models
-\node (models) [layer, below=0.8cm of ml] {\textbf{ML Models} \\ Baseline | Logistic | Random Forest | Gradient Boosting};
+\node (models) [layer, below=0.6cm of ml] {\textbf{ML Models} \\ 4 Classifiers};
 
 % Feature Engineering
-\node (features) [layer, below=0.8cm of models] {\textbf{Feature Engineering} \\ 15+ Temporal Features};
+\node (features) [layer, below=0.6cm of models] {\textbf{Feature Engineering} \\ 15+ Features};
 
 % Database
-\node (db) [db, below=0.8cm of features] {SQLite Database};
+\node (db) [db, below=0.6cm of features] {SQLite DB};
 
 % Arrows
 \draw [arrow] (ui1) -- (api);
@@ -188,15 +181,11 @@ The system is implemented as a full-stack web application. The backend uses Pyth
 \draw [arrow] (ml) -- (models);
 \draw [arrow] (models) -- (features);
 \draw [arrow] (features) -- (db);
-\draw [arrow, dashed] (db) -- (upload);
-\draw [arrow, dashed] (db) -- (features);
-
-% Labels
-\node[left=0.3cm of api, text width=1.5cm, font=\scriptsize] {HTTP/JSON};
-\node[left=0.3cm of db, text width=1.5cm, font=\scriptsize] {SQLAlchemy ORM};
+\draw [arrow, dashed] (db.east) -- ++(0.5,0) |- (upload.east);
+\draw [arrow, dashed] (db.west) -- ++(-0.5,0) |- (features.west);
 
 \end{tikzpicture}
-\caption{System Architecture - Three-tier architecture with frontend, API layer, and backend ML services}
+\caption{System Architecture - Three-tier design with frontend, API layer, backend ML services, and database}
 \label{fig:architecture}
 \end{figure}
 
