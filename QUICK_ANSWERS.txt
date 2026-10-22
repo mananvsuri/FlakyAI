@@ -1,0 +1,78 @@
+QUICK SUBMISSION ANSWERS - FlakeGuard AI
+=========================================
+
+Q1. Title of the term paper
+----------------------------
+An Explainable AI Framework for Flaky Test Detection in CI/CD Pipelines
+
+
+Q2. URL of the dataset
+----------------------
+https://github.com/mananvsuri/FlakyAI/blob/main/datasets/synthetic_test_data.csv
+
+
+Q3. Is preprocessing done (Y/N)
+--------------------------------
+Y (YES)
+
+Details:
+- 15+ features engineered
+- Data validation & cleaning
+- Temporal integrity maintained
+- NaN handling for ML models
+- Code: backend/app/ml/features/feature_extractor.py
+
+
+Q4. Problem & solution statement in paper (Y/N)
+------------------------------------------------
+Y (YES)
+
+Location: Section 1 (Introduction) & Abstract
+- Problem: Lines 23-28 in term_paper.tex
+- Solution: Lines 29-37 in term_paper.tex
+
+
+Q5. Flowchart/architecture mentioned (Y/N)
+-------------------------------------------
+N (NO - visual flowchart)
+
+Reason: Space constraints (3-page limit)
+Instead: Comprehensive text description in Sections 4-5
+Also: 2 screenshots showing UI architecture
+
+
+Q6. Python files uploaded (Y/N)
+--------------------------------
+Y (YES)
+
+Files: 11 .py files including:
+- datasets.py (upload API)
+- predictions.py (ML API)
+- flaky_detector.py (4 ML models)
+- feature_extractor.py (15+ features)
+- + 7 more support files
+
+
+Q7. LaTeX ZIP & PDF uploaded (Y/N)
+-----------------------------------
+PARTIAL
+
+Status:
+✓ term_paper.tex (present)
+✓ LATEX_README.txt (created)
+✓ CREATE_SUBMISSION_PACKAGE.sh (script ready)
+⚠ Need: PDF from Overleaf
+⚠ Need: Screenshots from Overleaf
+⚠ Then: Run script to create ZIP
+
+
+SUMMARY
+=======
+- Paper: Complete (3 pages, 13 refs)
+- Code: Complete (11 Python files)
+- Dataset: On GitHub (public)
+- App: Running (ports 8000 & 5173)
+- Authors: Manan Suri & Nilaksh Pathak
+- Institution: Nirma University
+
+ACTION: Download PDF & screenshots from Overleaf, then run CREATE_SUBMISSION_PACKAGE.sh
