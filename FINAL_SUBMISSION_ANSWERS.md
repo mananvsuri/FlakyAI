@@ -391,7 +391,7 @@ FlakeGuard_AI_LaTeX_Submission.zip
 | 2 | Dataset URL | https://github.com/mananvsuri/FlakyAI/blob/main/datasets/synthetic_test_data.csv | Public GitHub repo |
 | 3 | Preprocessing | **YES** - 15+ features, validation, temporal integrity | feature_extractor.py, datasets.py |
 | 4 | Problem & Solution | **YES** - In Introduction & Abstract | term_paper.tex lines 23-37 |
-| 5 | Flowchart | **NO** - Text description only, no visual diagram | Described in Sections 4-5 |
+| 5 | Flowchart & Architecture | **YES** - 2 TikZ diagrams (Figures 3 & 4) | term_paper.tex Sections 4.3 & 5 |
 | 6 | Python Files | **YES** - 11 .py files + full application | backend/app/*, frontend/src/* |
 | 7 | LaTeX ZIP & PDF | **PARTIAL** - .tex ready, creating ZIP | Instructions provided above |
 

@@ -105,40 +105,32 @@ production-ready web deployment enabling practical adoption."
 
 ---
 
-## 📊 Question 5: Is the flow chart and architecture of the proposed solution mentioned (Y/N)
-**Answer: N (No - flowchart not included, but architecture is described in text)**
+## Question 5: Is the flow chart and architecture of the proposed solution mentioned (Y/N)
+**Answer: Y (YES) ✅**
 
-**Reason:** 
-The paper describes the architecture in text form in the "Methodology" section but does not include a visual flowchart diagram due to space constraints (3-page limit). The complete pipeline is documented as:
+**Evidence:**
+- **Figure 3 (Flowchart):** Complete processing pipeline from input to output
+- **Figure 4 (Architecture):** System architecture showing three-tier design
 
-**Text Description in Paper:**
-- Section 4 (Methodology) describes the complete pipeline
-- Section 5 (Implementation) describes system architecture
+**Flowchart Location:** After Section 4.3 (Methodology)
+- Shows: Data input → Validation → Feature Engineering → Model Selection → Training → SHAP → Recommendations → Results
+- Includes: Side annotations for each step
+- Purpose: Illustrates end-to-end workflow
 
-**Architecture Components Described:**
-1. Data Input → Historical test executions (CSV upload)
-2. Data Validation → Format checking, parsing
-3. Feature Engineering → 15+ temporal features extracted
-4. Model Training → 4 models trained on features
-5. Prediction → Classification (FLAKY/NOT_FLAKY/INSUFFICIENT_DATA)
-6. Explainability → SHAP feature attribution
-7. Recommendations → Evidence-based suggestions
-8. Dashboard → Interactive web UI for results
+**Architecture Diagram Location:** Section 5 (Implementation)
+- Shows: Frontend Layer → API Layer → Backend Services → ML Models → Feature Engineering → Database
+- Includes: All system components and their interactions
+- Purpose: Demonstrates three-tier architecture design
 
-**What We Have Instead:**
-- Figure 1: Dataset Management Interface (screenshot)
-- Figure 2: Analysis Results Interface (screenshot)
-- Detailed text description of architecture
+**Visual Elements:**
+- Created using TikZ in LaTeX
+- Professional flowchart with process boxes
+- Architecture with layers and arrows showing data flow
+- Both diagrams are fully integrated into the paper
 
-**Action to Add Flowchart:**
-If required, we can add a flowchart diagram showing:
-```
-Test Executions → Upload → Validation → Feature Extraction → 
-Model Selection → Training → Prediction → SHAP Analysis → 
-Recommendations → Results Display
-```
-
-Would you like me to create a flowchart diagram to add to the paper?
+**What They Show:**
+1. **Flowchart:** Step-by-step processing pipeline
+2. **Architecture:** Component organization and communication
 
 ---
 

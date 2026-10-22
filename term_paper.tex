@@ -6,6 +6,8 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning, fit, backgrounds}
 
 \begin{document}
 
@@ -97,10 +99,108 @@ All models use fixed random seeds (42) for reproducibility, chronological 60/20/
 \subsection{Explainability and Recommendations}
 We employ SHAP (SHapley Additive exPlanations) \cite{lundberg2017unified} for post-hoc feature attribution, providing game-theoretic guarantees on explanation consistency. For each prediction, we present the predicted label with confidence score, top contributing features with SHAP values indicating direction and magnitude of influence, observed feature values from execution history, and evidence-based recommendations. Recommendations link predictions to actionable investigation steps: high transition rates suggest race conditions or timing issues, duration variability indicates timeout problems, and environment diversity suggests configuration differences.
 
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=0.8cm,
+    every node/.style={font=\small},
+    process/.style={rectangle, draw, fill=blue!10, text width=3.5cm, text centered, minimum height=0.7cm},
+    decision/.style={diamond, draw, fill=yellow!20, text width=2.5cm, text centered, minimum height=0.7cm},
+    arrow/.style={thick,->,>=stealth}
+]
+
+% Nodes
+\node (input) [process] {Test Execution History (CSV)};
+\node (validate) [process, below=of input] {Data Validation \& Parsing};
+\node (feature) [process, below=of validate] {Feature Engineering (15+ features)};
+\node (model) [process, below=of feature] {Model Selection};
+\node (train) [process, below=of model] {Training \& Prediction};
+\node (shap) [process, below=of train] {SHAP Explainability};
+\node (recommend) [process, below=of shap] {Generate Recommendations};
+\node (output) [process, below=of recommend] {Display Results};
+
+% Arrows
+\draw [arrow] (input) -- (validate);
+\draw [arrow] (validate) -- (feature);
+\draw [arrow] (feature) -- (model);
+\draw [arrow] (model) -- (train);
+\draw [arrow] (train) -- (shap);
+\draw [arrow] (shap) -- (recommend);
+\draw [arrow] (recommend) -- (output);
+
+% Side annotations
+\node[right=1.5cm of validate, text width=2cm, font=\scriptsize] {CSV format, required fields, timestamp};
+\node[right=1.5cm of feature, text width=2cm, font=\scriptsize] {Temporal ordering, no leakage};
+\node[right=1.5cm of model, text width=2cm, font=\scriptsize] {4 models available};
+\node[right=1.5cm of shap, text width=2cm, font=\scriptsize] {Feature importance};
+
+\end{tikzpicture}
+\caption{FlakeGuard AI Processing Pipeline - Complete workflow from data input to results display}
+\label{fig:flowchart}
+\end{figure}
+
 \section{Implementation}
 The system is implemented as a full-stack web application. The backend uses Python with FastAPI framework for RESTful API endpoints, SQLAlchemy ORM with SQLite database for test execution storage, scikit-learn for machine learning model implementation (Logistic Regression, Random Forest, Gradient Boosting), and SHAP library for explainability. The frontend uses React with TypeScript for type safety, Tailwind CSS for styling, and Recharts for data visualization. The architecture follows RESTful principles with Pydantic schema validation ensuring data integrity.
 
-The system implements software engineering best practices including chronological data splits preventing temporal leakage where future information influences past predictions, comprehensive input validation at API boundaries, proper error handling with informative messages, and extensive documentation. Figure 1 shows the dataset management interface where users upload CSV files containing test execution histories with validation feedback. Figure 2 displays the analysis interface with model selection dropdown, execution controls, and results visualization including summary statistics, feature importance charts, and individual test predictions with confidence scores and actionable recommendations.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=0.5cm,
+    every node/.style={font=\footnotesize},
+    layer/.style={rectangle, draw, fill=blue!15, text width=7cm, text centered, minimum height=1cm, rounded corners},
+    component/.style={rectangle, draw, fill=green!10, text width=3cm, text centered, minimum height=0.6cm},
+    db/.style={cylinder, draw, fill=orange!20, text width=2cm, text centered, minimum height=0.6cm, shape border rotate=90},
+    arrow/.style={thick,->,>=stealth}
+]
+
+% Frontend Layer
+\node (frontend) [layer] {\textbf{Frontend Layer} \\ React + TypeScript + Tailwind CSS};
+
+% UI Components
+\node (ui1) [component, below=0.3cm of frontend, xshift=-2cm] {Dataset Upload UI};
+\node (ui2) [component, right=0.2cm of ui1] {Analysis UI};
+
+% API Layer
+\node (api) [layer, below=1cm of ui1.south, xshift=2cm] {\textbf{API Layer} \\ FastAPI RESTful Endpoints};
+
+% Backend Components
+\node (backend) [layer, below=0.8cm of api] {\textbf{Backend Services}};
+\node (upload) [component, below=0.3cm of backend, xshift=-2.5cm] {Upload Handler};
+\node (ml) [component, right=0.2cm of upload] {ML Engine};
+\node (shap) [component, right=0.2cm of ml] {Explainability};
+
+% ML Models
+\node (models) [layer, below=0.8cm of ml] {\textbf{ML Models} \\ Baseline | Logistic | Random Forest | Gradient Boosting};
+
+% Feature Engineering
+\node (features) [layer, below=0.8cm of models] {\textbf{Feature Engineering} \\ 15+ Temporal Features};
+
+% Database
+\node (db) [db, below=0.8cm of features] {SQLite Database};
+
+% Arrows
+\draw [arrow] (ui1) -- (api);
+\draw [arrow] (ui2) -- (api);
+\draw [arrow] (api) -- (upload);
+\draw [arrow] (api) -- (ml);
+\draw [arrow] (api) -- (shap);
+\draw [arrow] (upload) -- (db);
+\draw [arrow] (ml) -- (models);
+\draw [arrow] (models) -- (features);
+\draw [arrow] (features) -- (db);
+\draw [arrow, dashed] (db) -- (upload);
+\draw [arrow, dashed] (db) -- (features);
+
+% Labels
+\node[left=0.3cm of api, text width=1.5cm, font=\scriptsize] {HTTP/JSON};
+\node[left=0.3cm of db, text width=1.5cm, font=\scriptsize] {SQLAlchemy ORM};
+
+\end{tikzpicture}
+\caption{System Architecture - Three-tier architecture with frontend, API layer, and backend ML services}
+\label{fig:architecture}
+\end{figure}
+
+The system implements software engineering best practices including chronological data splits preventing temporal leakage where future information influences past predictions, comprehensive input validation at API boundaries, proper error handling with informative messages, and extensive documentation. Figure \ref{fig:architecture} shows the complete system architecture with clear separation of concerns. Figure \ref{fig:flowchart} illustrates the processing pipeline from data input to results. Figure \ref{fig:dataset} shows the dataset management interface where users upload CSV files containing test execution histories with validation feedback. Figure \ref{fig:analysis} displays the analysis interface with model selection dropdown, execution controls, and results visualization including summary statistics, feature importance charts, and individual test predictions with confidence scores and actionable recommendations.
 
 \begin{figure}[htbp]
 \centering
